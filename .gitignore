@@ -1,0 +1,15 @@
+bin/
+obj/
+agent-tools/
+.dotnet/
+*.user
+.vs/
+Library/
+Logs/
+Temp/
+Build/
+Builds/
+UserSettings/
+*.apk
+*.aab
+*.keystore

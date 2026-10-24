@@ -1,41 +1,49 @@
-# Rugby League: Ultimate Footy 2027 — technical stop
+# Ultimate Footy
 
-This repository does not contain a game. Work stopped on 25 October 2026 (Australia/Sydney) because the existing project could not be inspected and this environment cannot produce a rugby game at the required standard.
+Rugby league match laws for a Unity URP game. The graphics scene is not in this repository yet.
 
-The required standard is a modern mobile 3D rugby league game: full-size players, match laws, tactical AI, momentum-based tackles, cinematic replays, and Android performance presets. A browser prototype with stand-in characters would not meet that standard, so none was built.
+## What ran
 
-## What was inspected
+`dotnet test` on 25 October 2026: **31 passed, 0 failed**.
+
+```bash
+dotnet test UltimateFooty.sln
+```
+
+The tests cover the laws kernel in `src/UltimateFooty.Match`. They do not open Unity, render a player, or build an Android app.
+
+## Graphics milestone: blocked
+
+The first milestone is a Unity URP scene with full-size players, a pitch, a tackle, and a real render. That scene was not created.
 
 | Check | Result |
 | --- | --- |
-| This repository | Empty apart from the initial commit. No models, code, Android project, or save data. |
-| `C:\Users\Jye\Rugby-League-Ultimate-Footy` | Not present. This session runs on a Linux cloud VM with no Windows drive. |
-| Public search | No public repository named Rugby League: Ultimate Footy. |
-| Connected Windows machine | A personal worker named `laptop` was online (connected 24 October 2026, 3:16pm Australia/Sydney) and registered no repositories. Subagents launched from this session ran on the cloud VM. They could not be placed on that laptop, so the folder was not read. |
+| `C:\Users\Jye\Rugby-League-Ultimate-Footy` | Not on this machine. This session is a Linux cloud VM. |
+| Unity Editor | Not installed here. The laptop worker named `laptop` was connected and registered no repositories. Commands from this session cannot run on that laptop, so the Unity version, Android module, GPU, and project files were not read. |
+| GPU on this VM | None. No `/dev/dri` and no NVIDIA device. A batch render would be software-only even after an editor install. |
+| Unity licence | Activating the editor needs the Unity account on the laptop. No licence file is available here. |
+| Player meshes | None in this repository. A capsule or an untextured mannequin would miss the required standard, so neither was added. |
+| Play Console | Not opened. Package `com.ultimatefooty.national` and the Lounge Lizard account were not verified, and nothing was uploaded. |
 
-Package identity, player progress, kits, and the current renderer are unknown. Nothing below is a review of that codebase.
+Open the next session on the laptop, with `C:\Users\Jye\Rugby-League-Ultimate-Footy` as the workspace, before any URP scene or signed bundle.
 
-## Why a build was not started
+## Laws that are implemented
 
-1. **The character bar needs an art and motion pipeline this session does not have.** Realistic heads, hands, kits, cloth, muscle deformation, and rugby actions (play-the-ball, tackle variants, kicks, get-up) require original meshes, PBR textures, a shared rig, and a large animation set licensed for a commercial game. Generating or downloading generic people and calling them a rugby cast would miss the brief. Rugby Nations assets cannot be copied.
+The kernel follows the International Laws of the Game text published by the NRL, plus the ARLC changes reported on 4 February 2026. Kick success is supplied by the caller. There is no ball-flight simulation.
 
-2. **WebGL is the wrong target for this brief.** A Three.js scene can show a pitch and skinned models. It is not a practical host for 26 deforming players, a stadium, a replay buffer, and mid-range Android GPUs at broadcast quality. Unity URP or Unreal are the engines that can carry that content. Choosing between them requires seeing the current project. Migrating blindly would throw away working match logic if it already exists.
+- Try 4, conversion 2, penalty goal 2, drop goal 1. The goal line is in-goal. Touch-in-goal is not a try.
+- After points, the team that conceded them kicks off.
+- Five completed tackles, then a sixth-tackle handover. The handover is not another tackle.
+- A tackle break does not advance the count.
+- Field knock-on or forward pass: scrum, and the receiving team's next tackle is a zero tackle.
+- Attacking knock-on in-goal: possession changes and no seven-tackle set.
+- Held up in-goal: play-the-ball 10 m out, unless it is the last tackle, which is a handover.
+- High tackle uses contact height and closing speed. A chest tackle is never penalised. Strictness changes sin-bin and send-off thresholds.
+- Play-the-ball infringement inside 20 m of the attacking goal line is a penalty. Further out, the set restarts.
+- Halves are 40 minutes and do not end while the ball is live.
+- Sin bin is 10 minutes.
+- Interchange: 13 on the field, at most four of six reserves, at most eight swaps.
+- Attribute upgrades spend experience and stop at 99.
+- Running lanes are gaps between current defender positions. They close when a defender fills them.
 
-3. **The match is a simulation, not a scene.** Six-tackle sets, play-the-balls, kicks, offside, markers, fatigue, and referee decisions have to be authoritative state. Animation has to follow that state. Context-sensitive crash tackles need impact speed, angle, attributes, and nearby defenders, then a real replay of recorded transforms. Screen shake is not that system. Validating it takes a playable match and device time this session cannot honestly claim.
-
-4. **Android presets need content budgets.** Performance, Balanced, High, and Ultra only mean something after LOD meshes, texture sizes, shadow distance, crowd representation, and a named GPU tier exist. The directive also ended mid-sentence at the Ultra preset, so later requirements were not received.
-
-## What to do next
-
-Run the next session **on the machine that has the folder**, with that folder as the workspace (Cursor desktop opened on `C:\Users\Jye\Rugby-League-Ultimate-Footy`, or a My Machines worker started with `--worker-dir` pointed at that checkout). Then the first deliverable is an audit of the real engine, assets, and licences, not new gameplay.
-
-After that audit, the build order is:
-
-1. Keep package identity, saves, and any rules code that already matches rugby league. Replace the renderer only if the audit shows it cannot host the character pipeline.
-2. Lock an original, commercially licensed character: body types, kit shader, numbers, hair, boots, LOD0 for replays and LOD1/LOD2 for the match. No cloth simulation on the full cast on mobile; bone cloth on replay heroes only.
-3. License or capture a rugby animation set and retarget it. Minimum: accel, sprint, decelerate, sidestep, fend, short and long pass, dummy, catch, grubber, chip, bomb, punt, play-the-ball, tackles from the front, side, and behind, fall, get-up, limp, celebration, referee signals. Foot and hand IK after the clips exist.
-4. Separate the laws from the animator: possession, tackle count, field zones, offside line, knock-on, penalty, clock, score. AI roles read that state.
-5. Add crash tackles only when a physics impulse and a recorded replay can show the same collision. Injuries stay within a teen-appropriate presentation: limp, medic, substitution. No graphic trauma.
-6. Cameras, broadcast UI, crowd, and graphics presets come after a match is readable. Presets change LOD, shadows, crowd, and resolution scale. They do not change the laws.
-
-Until the existing project is open in the session, there is nothing safe to implement.
+Movement, animation, cameras, audio, AI positioning, and Android packaging are not in this library.
