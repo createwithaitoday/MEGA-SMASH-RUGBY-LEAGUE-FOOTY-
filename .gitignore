@@ -13,3 +13,9 @@ UserSettings/
 *.apk
 *.aab
 *.keystore
+node_modules/
+dist/
+android/keystore.properties
+android/upload-keystore.jks
+*.jks
+.DS_Store
